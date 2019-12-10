@@ -1,2 +1,5 @@
 .idea/
 write_test.txt
+__pycache__/
+.~*
+result.docx
