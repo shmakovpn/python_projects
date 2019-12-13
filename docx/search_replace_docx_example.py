@@ -76,3 +76,8 @@ doc = Document(in_docx_filename)
 docx_replace_context(doc, context)
 doc.save(out_docx_filename)
 print(f"END")
+
+
+from datetime import timedelta
+from datetime import datetime
+dt = datetime.now()
