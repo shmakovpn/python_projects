@@ -25,7 +25,6 @@ def init_members(members):
     def wrapper(func):
         @wraps(func)
         def wrapped_f(self, *args, **kwargs):
-            pass
             func_args = inspect.getfullargspec(func).args[
                         1:]  # takes list of arguments of method 'func' without 'self'
             init_dict = {}
@@ -68,17 +67,40 @@ def init_members(members):
 
 
 class Complex:
-    some = 'hello'
-
-    #@init_members(members=('real', 'box', 'radius'))
-    #@init_members(members=[])
     @init_members
-    def __init__(self, real, imag=1, radius=2, box=3):
-        print(f"in __init__ locals={locals()}")
-        # self.real = real
-        # self.imag = imag
+    def __init__(self, real, imag=0):
+        pass
+
+    def __repr__(self):
+        return f"Complex({self.real}, {self.imag})"
+
+    def __str__(self):
+        return f"({self.real:g}+{self.imag:g}j)"
+
+    def __add__(self, other):
+        return Complex(self.real + other.real, self.imag + other.imag)
+
+    def __sub__(self, other):
+        return Complex(self.real - other.real, self.imag - other.imag)
 
 
-c = Complex(3, radius=22)
-print(c.__dict__)
-print(c.__class__.__dict__)
+c = Complex(2, 3)
+print(f"str(Complex(2, 3))={str(Complex(2,3))}")
+print(f"repr(Complex(2, 3))={repr(Complex(2,3))}")
+print(f"Complex(2, 3)+4.0={Complex(2, 3)+4.0}")
+try:
+    x = 4.0 + c
+except TypeError as e:
+    print(f"e={e}")
+
+
+class Complex2(Complex):
+    def __radd__(self, other):
+        return self + other
+
+    def __rsub__(self, other):
+        return Complex(other.real - other.real, other.imag - other.imag)
+
+
+c2 = Complex2(2, 3)
+print(f"Complex2(2,3)={Complex2(2,3)}")

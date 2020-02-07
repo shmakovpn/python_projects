@@ -4,10 +4,11 @@
 decorators.py
 """
 __author__ = "shmakovpn <shmakovpn@yandex.ru>"
-__date__ = "2020-01-17"
+__date__ = "2020-01-17,2020-01-27"
 
 from functools import wraps
 import inspect
+from datetime import datetime
 
 
 def init_members(members):
@@ -85,3 +86,24 @@ def init_members(members):
         func = members
         return wrapper(func)
     return wrapper
+
+
+def timer(func):
+    """
+    Decorator
+    Runs function 'func', then prints the time of execution
+    2020-01-27
+
+    :param func:
+    :return: func return
+    """
+    @wraps
+    def wrapped_f(*args, **kwargs):
+        start = datetime.now()
+        return_value = func(*args, **kwargs)
+        stop = datetime.now()
+        print(f"'{func.__name__}' execution time='{stop-start}'")
+        return return_value
+
+    return wrapped_f
+
